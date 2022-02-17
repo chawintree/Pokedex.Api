@@ -17,17 +17,17 @@ namespace Pokedex.Api.Controllers
         }
 
         [HttpGet("{name}")]
-        public async Task<IActionResult> Get([FromRoute] string name)
+        public async Task<IActionResult> Get([FromRoute] string name, CancellationToken cancellation = default)
         {
-            var result = await pokemonService.GetPokemonAsync(name);
+            var result = await pokemonService.GetPokemonAsync(name, false, cancellation);
 
             return ToActionResult(result);
         }
 
         [HttpGet("translated/{name}")]
-        public async Task<IActionResult> GetTranslated([FromRoute] string name)
+        public async Task<IActionResult> GetTranslated([FromRoute] string name, CancellationToken cancellation = default)
         {
-            var result = await pokemonService.GetPokemonAsync(name, true);
+            var result = await pokemonService.GetPokemonAsync(name, true, cancellation);
 
             return ToActionResult(result);
         }

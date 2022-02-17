@@ -31,7 +31,7 @@ namespace Pokedex.Api.Domain.Services
             var pokemon = GetPokemon(apiResponse.Content);
 
             if (translate)
-                await translationService.TranslateDescriptionAsync(pokemon);
+                await translationService.TranslateDescriptionAsync(pokemon, cancellation);
 
             return Result<Pokemon>.Success(pokemon);
         }

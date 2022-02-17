@@ -6,7 +6,7 @@ namespace Pokedex.Api.Domain.Services
 {
     public interface ITranslationService
     {
-        public Task TranslateDescriptionAsync(Pokemon pokemon);
+        public Task TranslateDescriptionAsync(Pokemon pokemon, CancellationToken cancellation = default);
     }
 
     class TranslationService : ITranslationService
@@ -20,14 +20,14 @@ namespace Pokedex.Api.Domain.Services
             this.translatorApi = translatorApi;
         }
 
-        public async Task TranslateDescriptionAsync(Pokemon pokemon)
+        public async Task TranslateDescriptionAsync(Pokemon pokemon, CancellationToken cancellation = default)
         {
             ApiResponse<TranslateResponse> apiResponse;
 
             if (pokemon.IsLegendary || string.Equals(pokemon.Habitat, Cave, StringComparison.InvariantCultureIgnoreCase))
-                apiResponse = await translatorApi.GetYodaTranslationAsync(new TranslateRequest(pokemon.Description));
+                apiResponse = await translatorApi.GetYodaTranslationAsync(new TranslateRequest(pokemon.Description), cancellation);
             else
-                apiResponse = await translatorApi.GetShakespeareTranslationAsync(new TranslateRequest(pokemon.Description));
+                apiResponse = await translatorApi.GetShakespeareTranslationAsync(new TranslateRequest(pokemon.Description), cancellation);
 
             if (apiResponse.IsSuccessStatusCode && apiResponse.Content.Success.Total != 0)
                 pokemon.Description = apiResponse.Content.Contents.Translated;
