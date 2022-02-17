@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using Refit;
+﻿using Refit;
 
 namespace Pokedex.Api.Domain.Clients.PokeApi
 {
     public interface IPokeApi
     {
-        [Get("/pokemon/{name}")]
+        [Get("/pokemon-species/{name}")]
         Task<ApiResponse<PokemonSpecies>> GetPokemonSpeciesAsync(string name, CancellationToken cancellation = default);
     }
 

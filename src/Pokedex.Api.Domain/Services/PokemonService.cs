@@ -5,13 +5,20 @@ using System.Net;
 
 namespace Pokedex.Api.Domain.Services
 {
-    public class PokemonService : IPokemonService
+    public interface IPokemonService
+    {
+        public Task<Result<Pokemon>> GetPokemonAsync(string name, bool translate = false, CancellationToken cancellation = default);
+    }
+
+    class PokemonService : IPokemonService
     {
         readonly IPokeApi pokeApi;
+        readonly ITranslationService translationService;
 
-        public PokemonService(IPokeApi pokeApi)
+        public PokemonService(IPokeApi pokeApi, ITranslationService translationService)
         {
             this.pokeApi = pokeApi;
+            this.translationService = translationService;
         }
 
         public async Task<Result<Pokemon>> GetPokemonAsync(string name, bool translate = false, CancellationToken cancellation = default)
@@ -19,20 +26,23 @@ namespace Pokedex.Api.Domain.Services
             var apiResponse = await pokeApi.GetPokemonSpeciesAsync(name, cancellation);
 
             if (!apiResponse.IsSuccessStatusCode)
-            {
                 return HandleApiError(apiResponse); 
-            }
            
-            // TODO Add mapper
-            var species = apiResponse.Content;
-            var pokemon = new Pokemon(species.Name, species.FlavorTextEntries.First(x => x.Language.Name == "en").FlavorText, species.Habitat?.Name, species.IsLegendary);
+            var pokemon = GetPokemon(apiResponse.Content);
 
-            // TODO Add translation rulesets
+            if (translate)
+                await translationService.TranslateDescriptionAsync(pokemon);
 
             return Result<Pokemon>.Success(pokemon);
         }
 
-        private Result<Pokemon> HandleApiError(ApiResponse<PokemonSpecies> apiResponse)
+        Pokemon GetPokemon(PokemonSpecies species) => new Pokemon(
+                species.Name, 
+                species.FlavorTextEntries.First(x => x.Language.Name == "en").FlavorText, 
+                species.Habitat?.Name, 
+                species.IsLegendary);
+
+        Result<Pokemon> HandleApiError(ApiResponse<PokemonSpecies> apiResponse)
         {
             if (apiResponse.StatusCode == HttpStatusCode.NotFound)
                 return Result<Pokemon>.NotFound();

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Pokedex.Api.Domain.Models;
 using Pokedex.Api.Domain.Services;
+using System.Net;
 
 namespace Pokedex.Api.Controllers
 {
@@ -9,6 +10,7 @@ namespace Pokedex.Api.Controllers
     public class PokemonController : ControllerBase
     {
         readonly IPokemonService pokemonService;
+
         public PokemonController(IPokemonService pokemonService)
         {
             this.pokemonService = pokemonService;
@@ -34,10 +36,10 @@ namespace Pokedex.Api.Controllers
         {
             return result.Status switch
             {
-                Status.Success => Ok(result),
+                Status.Success => Ok(result.Value),
                 Status.NotFound => NotFound(),
-                Status.Error => StatusCode(500),
-                _ => StatusCode(500)
+                Status.Error => StatusCode((int)HttpStatusCode.InternalServerError),
+                _ => StatusCode((int)HttpStatusCode.InternalServerError)
             };
         }
     }

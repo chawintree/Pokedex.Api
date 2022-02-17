@@ -15,6 +15,7 @@ namespace Pokedex.Api.Domain.IoC
         public static void AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IPokemonService, PokemonService>();
+            services.AddSingleton<ITranslationService, TranslationService>();
 
             services.AddApiClient<IPokeApi>(configuration, "PokeApiSettings");
             services.AddApiClient<ITranslatorApi>(configuration, "TranslatorApiSettings");
@@ -27,8 +28,8 @@ namespace Pokedex.Api.Domain.IoC
             if (settings.BaseUrl == null)
                 throw new ArgumentNullException(nameof(settings.BaseUrl));
 
-            var refitSettings = new RefitSettings(new NewtonsoftJsonContentSerializer());
-                //new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() }}));
+            var refitSettings = new RefitSettings(new NewtonsoftJsonContentSerializer(
+                new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() }}));
 
             services.AddRefitClient<T>(refitSettings)
                 .ConfigureHttpClient(c => 
