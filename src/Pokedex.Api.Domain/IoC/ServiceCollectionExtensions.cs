@@ -7,6 +7,7 @@ using Pokedex.Api.Domain.Clients.PokeApi;
 using Pokedex.Api.Domain.Extensions;
 using Pokedex.Api.Domain.Services;
 using Refit;
+using System;
 
 namespace Pokedex.Api.Domain.IoC
 {

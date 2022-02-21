@@ -1,27 +1,30 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Pokedex.Api.Domain.IoC;
 
 namespace Pokedex.Api
 {
-    public class Program
+    partial class Program
     {
-        public static void Main()
+        static void Main()
         {
             var builder = WebApplication.CreateBuilder();
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddHealthChecks();
             builder.Services.AddServices(builder.Configuration);
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-
             app.UseHttpsRedirection();
-
+            app.UseHttpLogging();
             app.UseAuthorization();
-
             app.MapControllers();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.MapHealthChecks("/health");
 
             app.Run();
         }

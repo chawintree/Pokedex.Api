@@ -1,6 +1,9 @@
 ﻿using Pokedex.Api.Domain.Clients.PokeApi;
 using Pokedex.Api.Domain.Models;
 using Refit;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Pokedex.Api.Domain.Services
 {

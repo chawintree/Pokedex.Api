@@ -1,4 +1,6 @@
-﻿namespace Pokedex.Api.Domain.Models
+﻿using System;
+
+namespace Pokedex.Api.Domain.Models
 {
     public class Result<T>
     {

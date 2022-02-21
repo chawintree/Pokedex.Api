@@ -25,37 +25,37 @@ namespace Pokedex.Api.Tests.Api
         }
 
         [Fact]
-        public async Task Get_ReturnsSuccess()
+        public async Task GetPokemon_ReturnsSuccess()
         {
             var pokemon = fixture.Create<Pokemon>();
 
             pokemonService.GetPokemonAsync(pokemonName)
                 .Returns(Result<Pokemon>.Success(pokemon));
 
-            var result = await controller.Get(pokemonName);
+            var result = await controller.GetPokemon(pokemonName);
 
             result.Should().BeOfType<OkObjectResult>();
             ((OkObjectResult)result).Value.Should().Be(pokemon);
         }
 
         [Fact]
-        public async Task Get_PokemonNotFound_ReturnsNotFound()
+        public async Task GetPokemon_PokemonNotFound_ReturnsNotFound()
         {
             pokemonService.GetPokemonAsync(pokemonName)
                 .Returns(Result<Pokemon>.NotFound());
 
-            var result = await controller.Get(pokemonName);
+            var result = await controller.GetPokemon(pokemonName);
 
             result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
-        public async Task Get_ServiceErrors_ReturnsServerError()
+        public async Task GetPokemon_ServiceErrors_ReturnsServerError()
         {
             pokemonService.GetPokemonAsync(pokemonName)
                 .Returns(Result<Pokemon>.Failure());
 
-            var result = await controller.Get(pokemonName);
+            var result = await controller.GetPokemon(pokemonName);
 
             result.Should().BeOfType<StatusCodeResult>();
             ((StatusCodeResult)result).StatusCode.Should().Be((int)HttpStatusCode.InternalServerError);

@@ -1,4 +1,7 @@
 ﻿using Refit;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Pokedex.Api.Domain.Clients.PokeApi
 {

@@ -3,20 +3,19 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>	  <Nullable>enable</Nullable>
-	      <Nullable>enable</Nullable>
-    
-    <Nullable>enable</Nullable>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>	  <Nullable>enable</Nullable>
-	  
-	  <Nullable>enable</Nullable>    	      
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>pokedex_api</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Pokedex.Api.Domain\Pokedex.Api.Domain.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <InternalsVisibleTo Include="Pokedex.Api.Tests" />
   </ItemGroup>
 
 </Project>
