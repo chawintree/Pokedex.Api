@@ -4,11 +4,11 @@ A simple API which returns Pokemon information
 
 ## Prerequisites
 
-The user should have `.NET 6.0` SDKs and installed, and optionally `docker`
+The user should have the `.NET 6.0` SDKs installed and optionally `docker`
 
 ## Building the application
 
-Run the following command in the root directory to create a Docker image called `pokedex-api``
+Run the following command in the root directory to create a Docker image called `pokedex-api`
 
 ``` cmd
 docker build -t pokedex-api -f src/Pokedex.Api/Dockerfile .
@@ -52,9 +52,11 @@ Prior to moving this application to a Production-like environment, there are a n
 * Logging
   * Middleware for response codes, routes and metadata
   * Wrapper for dependant API clients calls
+  * Exception logging
 * Metrics
   * Response times
   * Response codes
   * Dependant API response times & codes
 * Separating domain models and response models
 * Input validation
+* Refactor `TranslationService` to inject rulesets for different translations
